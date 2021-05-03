@@ -29,17 +29,17 @@ const Container = styled.section`
 `;
 
 const Content = styled.div`
-  margin-bottom: 10vw;
-  width: 100%;
-  position: relative;
-  min-height: 100vh;
-  box-sizing: border-box;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  padding: 80px 40px;
-  height: 100%;
+	margin-bottom: 10vw;
+	width: 100%;
+	position: relative;
+	min-height: 100vh;
+	box-sizing: border-box;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	padding: 80px 40px;
+	height: 100%;
 `;
 
 const BgImage = styled.div`
@@ -94,17 +94,18 @@ const SignUp = styled.a`
 
 // hsla(hue, saturation, lightness, alpha)
 const Description = styled.p`
-  color: hsla(0, 0%, 95%, 1);
-  font-size: 11px;
-  margin: 0 0 24px;
-  line-height: 1.5;
-  letter-spacing: 1.5px;
+	cursor: pointer;
+    color: hsla(0, 0%, 95%, 1);
+    font-size: 11px;
+    margin: 0 0 24px;
+    line-height: 1.5;
+    letter-spacing: 1.5px;
 `;
 
 const CTALogoTwo = styled.img`
-  max-width: 600px;
-  margin-bottom: 20px;
-  width: 90%;
-  display: inline-block;
-  vertical-align: bottom;
+    max-width: 600px;
+    margin-bottom: 20px;
+    width: 90%;
+    display: inline-block;
+    vertical-align: bottom;
 `;
