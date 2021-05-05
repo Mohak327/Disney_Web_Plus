@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import {auth, provider} from '../firebase'
-
+import {Link} from 'react-router-dom'
 
 const Header = (props) => {
 
@@ -16,9 +16,11 @@ const Header = (props) => {
 
     return (
         <Nav>
-            <Logo>
-                <img src="/images/logo.svg" alt="Disney+"/>
-            </Logo>
+            <Link to='/home'>
+                <Logo>
+                    <img src="/images/logo.svg" alt="Disney+"/>
+                </Logo>
+            </Link>
             <NavMenu>
                 <a href="/home">
                     <img src="/images/home-icon.svg" alt="HOME" />
@@ -99,7 +101,7 @@ const NavMenu = styled.nav`
         cursor: pointer;
 
         img {
-            height: 20px;
+            height: 30px !important;
             padding: 5px;
         }
 
@@ -138,10 +140,10 @@ const NavMenu = styled.nav`
         }
     }
 
-// Don't show the navbar menu when screen size goes below 768px
-//     @media (max-width: 1000px) {
-//     display: none;
-// }
+// Don't show the navbar menu when screen size goes below 968px
+    @media (max-width:968px) {
+    display: none;
+}
 `;
 
 const Login = styled.a`
