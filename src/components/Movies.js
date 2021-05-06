@@ -13,47 +13,16 @@ const Movies = () => {
 			<h4>Recommended For You</h4>
 			<Content>
 
-			  <Link to="/detail">
-				<Wrap>
-					<img src='https://i.pinimg.com/originals/f9/a6/14/f9a6140c6495f0dbc3cbf25752ca9666.png' alt='' />
-				</Wrap>
-			  </Link>
-			  <Link to="/detail">
-				<Wrap>
-					<img src='https://i.pinimg.com/originals/f9/a6/14/f9a6140c6495f0dbc3cbf25752ca9666.png' alt='' />
-				</Wrap>
-			  </Link>
-			  <Link to="/detail">
-				<Wrap>
-					<img src='https://i.pinimg.com/originals/f9/a6/14/f9a6140c6495f0dbc3cbf25752ca9666.png' alt='' />
-				</Wrap>
-			  </Link>
-			  <Link to="/detail">
-				<Wrap>
-					<img src='https://i.pinimg.com/originals/f9/a6/14/f9a6140c6495f0dbc3cbf25752ca9666.png' alt='' />
-				</Wrap>
-			  </Link>
-			  <Link to="/detail">
-				<Wrap>
-					<img src='https://i.pinimg.com/originals/f9/a6/14/f9a6140c6495f0dbc3cbf25752ca9666.png' alt='' />
-				</Wrap>
-			  </Link>
-			  <Link to="/detail">
-				<Wrap>
-					<img src='https://i.pinimg.com/originals/f9/a6/14/f9a6140c6495f0dbc3cbf25752ca9666.png' alt='' />
-				</Wrap>
-			  </Link>
-			  <Link to="/detail">
-				<Wrap>
-					<img src='https://i.pinimg.com/originals/f9/a6/14/f9a6140c6495f0dbc3cbf25752ca9666.png' alt='' />
-				</Wrap>
-			  </Link>
-			  <Link to="/detail">
-				<Wrap>
-					<img src='https://i.pinimg.com/originals/f9/a6/14/f9a6140c6495f0dbc3cbf25752ca9666.png' alt='' />
-				</Wrap>
-			  </Link>
-
+{/* Map through all the ovies if they exist */}
+			{ movies &&
+				movies.map((movie) => (
+					<Wrap key={movie.id}>
+						<Link to={`/detail/` + movie.id}>
+							<img src={movie.cardImg} alt={movie.title} />
+						</Link>
+					</Wrap>
+				))
+			}
 			</Content>
 		</Container>
 	)
@@ -61,15 +30,16 @@ const Movies = () => {
 
 export default Movies
 
-const Container = styled.div`padding: 0 0 26px;`
+const Container = styled.div`
+	padding: 0 0 16px;
+`
 
 const Content = styled.div`
 	display: grid;
 	grid-gap: 25px;
 	grid-template-columns: repeat(4, minmax(0, 1fr));
-
-		@media (max-width: 768px) {
-		grid-template-columns: repeat(2, minmax(0, 1fr));
+	@media (max-width: 768px) {
+	grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 `
 
