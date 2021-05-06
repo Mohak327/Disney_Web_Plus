@@ -1,12 +1,25 @@
 import styled from 'styled-components'
+import {auth, provider} from '../firebase'
+
+
 
 const Login = (props) => {
+	const handleAuth = () => {
+	  auth
+		.signInWithPopup(provider)
+		.then((result) => {
+			console.log(result);
+		}).catch((error) => {
+			alert(error.message)
+		});
+	}
+
   return (
     <Container>
       <Content>
 		<CTA>
 			<CTALogoOne src="/images/cta-logo-one.svg"/>
-			<SignUp>get it all right here</SignUp>
+			<SignUp onClick={handleAuth}>get it all right here</SignUp>
 			<Description>
             	Get Premier Access to Raya and the Last Dragon for an additional fee with a Disney+ subscription. As of 01/05/21, the price of Disney+ and The Disney Bundle will increase by $2.00.
 			</Description>
@@ -18,7 +31,7 @@ const Login = (props) => {
   );
 }
 
-export default Login;
+export default Login
 
 const Container = styled.section`
     overflow: hidden;
@@ -76,6 +89,7 @@ const CTALogoOne = styled.img`
 `;
 
 const SignUp = styled.a`
+	cursor: pointer;
 	text-transform: uppercase;
 	font-weight: 800;
 	color: #f9f9f9;

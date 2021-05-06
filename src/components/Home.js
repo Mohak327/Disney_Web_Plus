@@ -1,14 +1,33 @@
+import { useEffect } from 'react'
 import styled from 'styled-components'
 import ImgSlider from './ImgSlider'
 import Viewers from './Viewers'
-import Recommends from './Recommends'
+import Movies from './Movies'
+import db from '../firebase'
+
+import { useDispatch } from 'react-redux'
+import { setMovies } from '../features/movie/movieSlice'
 
 const Home = () => {
+	const dispatch = useDispatch();
+	// let recommends = [];
+
+	useEffect(() => {
+		db.collection("movies").onSnapshot((snapshot) => {
+			let tempMovies = snapshot.docs.map((doc) => {
+			// 	// console.log(movies)
+				console.log(doc.data());
+				return { id: doc.id, ...doc.data() }
+			})
+			dispatch(setMovies(tempMovies));
+		})
+	}, [])
+
 	return (
 		<Container>
 			<ImgSlider />
 			<Viewers />
-			<Recommends />
+			<Movies />
 		</Container>
 	)
 }
