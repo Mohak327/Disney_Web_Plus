@@ -1,54 +1,117 @@
+import {useEffect} from "react"
 import styled from 'styled-components';
 import {auth, provider} from '../firebase'
-import {Link} from 'react-router-dom'
+import {Link, useHistory} from 'react-router-dom'
+import { useDispatch, useSelector } from "react-redux"
+import {
+    selectUserName,
+    selectUserPhoto,
+    setUserLogin,
+    setSignOut,
+} from "../features/user/userSlice"
 
 const Header = (props) => {
 
-	const handleAuth = () => {
+    const history = useHistory()
+    const dispatch = useDispatch()
+    const userName = useSelector(selectUserName);
+    const userPhoto = useSelector(selectUserPhoto);
+
+    useEffect(() => {
+        auth.onAuthStateChanged(async(user) => {
+            if (user) {
+                dispatch(setUserLogin({
+                    name: user.displayName,
+                    email: user.email,
+                    photo: user.photoURL
+                }))
+                history.push("/home");
+            }
+        });
+    }, [userName]);
+
+	const signIn = () => {
 	  auth
 		.signInWithPopup(provider)
 		.then((result) => {
-			console.log(result);
+            let user = result.user
+            dispatch(setUserLogin({
+                name: user.displayName,
+                email: user.email,
+                photo: user.photoURL
+            }))
+            history.push("/home");
 		}).catch((error) => {
 			alert(error.message)
 		});
 	}
 
+    const signOut = () => {
+        auth.signOut()
+        .then(() => {
+            dispatch(setSignOut());
+            history.push("/");
+        })
+        .catch((err) => alert(err.message))
+    }
+
     return (
         <Nav>
-            <Link to='/home'>
+            {/* <Link to='/home'> */}
                 <Logo>
-                    <img src="/images/logo.svg" alt="Disney+"/>
+                    <img
+                        src="/images/logo.svg"
+                        alt="Disney+"/>
                 </Logo>
-            </Link>
-            <NavMenu>
-                <a href="/home">
-                    <img src="/images/home-icon.svg" alt="HOME" />
-                    <span>HOME</span>
-                </a>
-                <a>
-                    <img src="/images/search-icon.svg" alt="SEARCH" />
-                    <span>SEARCH</span>
-                </a>
-                <a>
-                    <img src="/images/watchlist-icon.svg" alt="WATCHLIST" />
-                    <span>WATCHLIST</span>
-                </a>
-                <a>
-                    <img src="/images/original-icon.svg" alt="ORIGINALS" />
-                    <span>ORIGINALS</span>
-                </a>
-                <a>
-                    <img src="/images/movie-icon.svg" alt="MOVIES" />
-                    <span>MOVIES</span>
-                </a>
-                <a>
-                    <img src="/images/series-icon.svg" alt="SERIES" />
-                    <span>SERIES</span>
-                </a>
-            </NavMenu>
-			<Login onClick={handleAuth}>Login</Login>
-            <UserImg src='https://i.postimg.cc/JhMqbqDP/me.jpg'/>
+            {/* </Link> */}
+
+            { !userName ? (
+			    <Login onClick={signIn}>Login</Login>
+            ) :
+            <>
+                <NavMenu>
+                    <a href="/home">
+                        <img src="/images/home-icon.svg" alt="HOME" />
+                        <span>HOME</span>
+                    </a>
+                    <a>
+                        <img
+                            src="/images/search-icon.svg"
+                            alt="SEARCH"
+                        />
+                        <span>SEARCH</span>
+                    </a>
+                    <a>
+                        <img
+                            src="/images/watchlist-icon.svg" alt="WATCHLIST"
+                        />
+                        <span>WATCHLIST</span>
+                    </a>
+                    <a>
+                        <img
+                            src="/images/original-icon.svg" alt="ORIGINALS"
+                        />
+                        <span>ORIGINALS</span>
+                    </a>
+                    <a>
+                        <img
+                            src="/images/movie-icon.svg"
+                            alt="MOVIES"
+                        />
+                        <span>MOVIES</span>
+                    </a>
+                    <a>
+                        <img
+                            src="/images/series-icon.svg" alt="SERIES"
+                        />
+                        <span>SERIES</span>
+                    </a>
+                </NavMenu>
+                <UserImg
+                    onClick = {signOut}
+                    src='https://i.postimg.cc/JhMqbqDP/me.jpg'/>
+            </>
+            }
         </Nav>
     );
 }
@@ -140,15 +203,15 @@ const NavMenu = styled.nav`
         }
     }
 
-// Don't show the navbar menu when screen size goes below 968px
-    @media (max-width:968px) {
+// Don't show the navbar menu when screen size goes below 920px
+    @media (max-width:920px) {
     display: none;
 }
 `;
 
 const Login = styled.a`
     position: fixed;
-    right: 96px;
+    right: 46px;
     // margin: 0 10px;
 
 	background-color: black;

@@ -1,45 +1,72 @@
 import styled from 'styled-components'
-import {auth, provider} from '../firebase'
-
-
+import { auth, provider } from '../firebase'
+import {useHistory} from 'react-router-dom'
+import { useDispatch, useSelector } from "react-redux"
+import {
+    selectUserName,
+    selectUserPhoto,
+    setUserLogin,
+    setSignOut,
+} from "../features/user/userSlice"
 
 const Login = (props) => {
-	const handleAuth = () => {
+
+	const history = useHistory()
+    const dispatch = useDispatch()
+    const userName = useSelector(selectUserName);
+    const userPhoto = useSelector(selectUserPhoto);
+
+	const signIn = () => {
 	  auth
 		.signInWithPopup(provider)
 		.then((result) => {
-			console.log(result);
+            let user = result.user
+            dispatch(setUserLogin({
+                name: user.displayName,
+                email: user.email,
+                photo: user.photoURL
+            }))
+            history.push("/home");
 		}).catch((error) => {
 			alert(error.message)
 		});
 	}
 
-  return (
-    <Container>
-      <Content>
-		<CTA>
-			<CTALogoOne src="/images/cta-logo-one.svg"/>
-			<SignUp onClick={handleAuth}>get it all right here</SignUp>
-			<Description>
-            	Get Premier Access to Raya and the Last Dragon for an additional fee with a Disney+ subscription. As of 01/05/21, the price of Disney+ and The Disney Bundle will increase by $2.00.
-			</Description>
-			<CTALogoTwo src="/images/cta-logo-two.png" alt="" />
-		</CTA>
-        <BgImage />
-      </Content>
-    </Container>
-  );
+    const signOut = () => {
+        auth.signOut()
+        .then(() => {
+            dispatch(setSignOut());
+            history.push("/");
+        })
+    }
+
+	return (
+		<Container>
+			<Content>
+				<CTA>
+					<CTALogoOne src='/images/cta-logo-one.svg' />
+					<SignUp onClick={signIn}>get it all right here</SignUp>
+					<Description>
+						Get Premier Access to Raya and the Last Dragon for an additional fee with a Disney+
+						subscription. As of 01/05/21, the price of Disney+ and The Disney Bundle will increase by $2.00.
+					</Description>
+					<CTALogoTwo src='/images/cta-logo-two.png' alt='' />
+				</CTA>
+				<BgImage />
+			</Content>
+		</Container>
+	)
 }
 
 export default Login
 
 const Container = styled.section`
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-    height: 100vh;
-`;
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+	text-align: center;
+	height: 100vh;
+`
 
 const Content = styled.div`
 	margin-bottom: 10vw;
@@ -53,22 +80,22 @@ const Content = styled.div`
 	flex-direction: column;
 	padding: 80px 40px;
 	height: 100%;
-`;
+`
 
 const BgImage = styled.div`
-    background-image: url("/images/login-background.jpg");
-    height: 100%;
-    background-position: top;
-    background-size: cover;
-    background-repeat: no-repeat;
-    position: absolute;
-    top: 0;
-    right: 0;
-    left: 0;
+	background-image: url("/images/login-background.jpg");
+	height: 100%;
+	background-position: top;
+	background-size: cover;
+	background-repeat: no-repeat;
+	position: absolute;
+	top: 0;
+	right: 0;
+	left: 0;
 
 	// Puts this image on the lowest level of view
-    z-index: -1;
-`;
+	z-index: -1;
+`
 
 const CTA = styled.div`
 	align-items: center;
@@ -78,7 +105,7 @@ const CTA = styled.div`
 	flex-direction: column;
 	transition-timing-function: ease-out;
 	transition: opacity: 0.2s;
-`;
+`
 
 const CTALogoOne = styled.img`
 	margin-bottom: 12px;
@@ -86,7 +113,7 @@ const CTALogoOne = styled.img`
 	min-height: 1px;
 	display: block;
 	width: 90%;
-`;
+`
 
 const SignUp = styled.a`
 	cursor: pointer;
@@ -103,23 +130,23 @@ const SignUp = styled.a`
 	border-radius: 4px;
 	&:hover {
 		background-color: #0483ee;
-  }
-`;
+	}
+`
 
 // hsla(hue, saturation, lightness, alpha)
 const Description = styled.p`
 	cursor: pointer;
-    color: hsla(0, 0%, 95%, 1);
-    font-size: 11px;
-    margin: 0 0 24px;
-    line-height: 1.5;
-    letter-spacing: 1.5px;
-`;
+	color: hsla(0, 0%, 95%, 1);
+	font-size: 11px;
+	margin: 0 0 24px;
+	line-height: 1.5;
+	letter-spacing: 1.5px;
+`
 
 const CTALogoTwo = styled.img`
-    max-width: 600px;
-    margin-bottom: 20px;
-    width: 90%;
-    display: inline-block;
-    vertical-align: bottom;
-`;
+	max-width: 600px;
+	margin-bottom: 20px;
+	width: 90%;
+	display: inline-block;
+	vertical-align: bottom;
+`
